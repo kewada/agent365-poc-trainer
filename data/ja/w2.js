@@ -6,10 +6,12 @@
   var PURVIEW_NAV = [
     { id: 'nav:pv.home', label: 'ホーム', icon: 'home' },
     { group: 'ソリューション' },
-    { id: 'nav:pv.dspm', label: 'DSPM for AI', icon: 'blocks', level: 2 },
+    { id: 'nav:pv.dspm', label: 'DSPM', icon: 'blocks', level: 2 },
+    { id: 'nav:pv.explorer', label: 'アクティビティエクスプローラー', icon: 'search', level: 3 },
     { id: 'nav:pv.audit', label: '監査', icon: 'scroll-text', level: 2 },
     { id: 'nav:pv.dlp', label: 'データ損失防止', icon: 'ban', level: 2 },
     { id: 'nav:pv.irm', label: 'インサイダー リスク管理', icon: 'eye', level: 2 },
+    { id: 'nav:pv.cc', label: 'コミュニケーションコンプライアンス', icon: 'bot-message-square', level: 2 },
     { id: 'nav:pv.labels', label: '情報保護', icon: 'tag', level: 2 },
     { group: '設定' },
     { id: 'nav:pv.settings', label: '設定', icon: 'settings', level: 2 }
@@ -309,7 +311,7 @@
     id: 'w2-2',
     week: 2,
     chapter: '7',
-    title: '手順 4：Purview DSPM for AI の確認と検知ポリシー',
+    title: '手順 4：Purview DSPM の確認と検知ポリシー',
     summary: 'AI 観測可能性、監査、Risky AI usage、DLP（監査モード）',
     steps: [
 
@@ -330,7 +332,7 @@
           {
             portal: 'purview', url: 'https://purview.microsoft.com/dspm/aiobservability', brand: 'Microsoft Purview',
             nav: PURVIEW_NAV, navSel: 'nav:pv.dspm',
-            crumb: 'DSPM for AI', h1: 'DSPM for AI',
+            crumb: 'DSPM', h1: 'DSPM',
             content: [
               {
                 t: 'list', items: [
@@ -344,7 +346,7 @@
           {
             portal: 'purview', url: 'https://purview.microsoft.com/dspm/aiobservability', brand: 'Microsoft Purview',
             nav: PURVIEW_NAV, navSel: 'nav:pv.dspm',
-            crumb: 'DSPM for AI > AI 観測可能性', h1: 'AI 観測可能性',
+            crumb: 'DSPM > AI 観測可能性', h1: 'AI 観測可能性',
             desc: '過去 30 日間に活動のあるエージェントがリスク順に表示されます。',
             content: [
               {
@@ -384,7 +386,7 @@
         ],
         endScreen: 3,
         tasks: [
-          { say: '左ナビの **DSPM for AI** を開く', target: 'nav:pv.dspm', screen: 0, navSel: 'nav:pv.dspm', hint: 'ソリューションの一覧にあります。', done: 'DSPM for AI が開きました。' },
+          { say: '左ナビの **DSPM** を開く', target: 'nav:pv.dspm', screen: 0, navSel: 'nav:pv.dspm', hint: 'ソリューションの一覧にあります。', done: 'DSPM が開きました。' },
           { say: '**AI 観測可能性** を開く', target: 'pv:aiobs', screen: 1, hint: '過去 30 日間の活動をリスク順に見る画面です。', done: 'AI 観測可能性が開きました。' },
           { say: '最もリスクの高い **人事 FAQ エージェント** の詳細を開く', target: 'row:p1', screen: 2, set: { 'panel:pvdetail': true }, hint: 'リスク順に並んでいます。一番上の行です。', done: '詳細が表示されました。' },
           { say: '詳細（Entra の状態、作成日、オーナー、推奨される是正策）を **台帳に記録**する', target: 'btn:pvrecord', hint: '重点エージェントの情報は必ず台帳に残します。', done: '記録しました。' },
@@ -468,21 +470,30 @@
 
       {
         type: 'sim',
-        title: '7.4 DLP を監査モードで構成する',
-        goal: 'エージェントとの対話を対象にした DLP を、パイロットグループ限定・監査のみで用意する',
-        ref: 'image36.png',
-        refCaption: 'Purview > データ損失防止 > ポリシー（実画面）',
+        title: '7.4 DLP をシミュレーションモードで構成する',
+        goal: '対象グループと機密情報の種類を設定し、追加の DLP ポリシーを強制せずに評価する',
+        ref: ['image36.png', 'image37.png', 'image38.png', 'image39.png', 'image40.png', 'image41.png', 'image42.png', 'image43.png'],
+        refCaption: 'DLP の開始、対象設定、追加ポリシー、シミュレーションモード（実画面）',
         screens: [
           {
             portal: 'purview', url: 'https://purview.microsoft.com/datalossprevention/policies', brand: 'Microsoft Purview',
             nav: PURVIEW_NAV, navSel: 'nav:pv.dlp',
             crumb: 'データ損失防止 > ポリシー', h1: 'DLP ポリシー',
             content: [
-              { t: 'cmdbar', items: [{ id: 'cmd:newdlp', label: 'ポリシーの作成', icon: 'plus' }] },
+              { t: 'banner', text: '既存ポリシーがエージェントとの対話を対象としているか確認します。未構成の場合は「始める」から設定します。' },
+              { t: 'btns', items: [{ id: 'btn:startdlp', label: '始める', prim: true }] },
               {
-                t: 'table', cols: ['ポリシー名', '場所', 'モード'],
+                t: 'card', title: 'ユーザーとグループ', when: 'panel:dlpstart', children: [
+                  { t: 'select', id: 'sel:startscope', label: '対象グループ', options: [{ v: '', label: '（選択してください）' }, { v: 'pilot', label: 'SG-Agent365-Pilot（パイロット用セキュリティグループ）' }, { v: 'all', label: '組織全体' }] },
+                  { t: 'select', id: 'sel:sit', label: '機密情報の種類', options: [{ v: '', label: '（選択してください）' }, { v: 'credit', label: 'クレジットカード番号' }, { v: 'none', label: '指定しない' }] },
+                  { t: 'btns', items: [{ id: 'btn:saveinitial', label: '設定を保存', prim: true }] }
+                ]
+              },
+              { t: 'cmdbar', when: 'panel:dlpinitial', items: [{ id: 'cmd:newdlp', label: 'ポリシーの作成', icon: 'plus' }] },
+              {
+                t: 'table', when: 'panel:dlpinitial', cols: ['ポリシー名', '場所', 'モード'],
                 rows: [
-                  { cells: ['既存：機密情報の外部共有制限', 'SharePoint / OneDrive', { chip: '有効', kind: 'ok' }] }
+                  { cells: ['機密情報の利用状況の確認', 'SG-Agent365-Pilot', { chip: 'シミュレーション', kind: 'ok' }] }
                 ]
               },
               {
@@ -490,19 +501,27 @@
                   { t: 'field', id: 'fld:dlpname', label: 'ポリシー名', placeholder: 'A365-PoC-Agent-DLP-Audit', help: 'PoC 用と分かる命名にします。' },
                   { t: 'checks', items: [{ id: 'chk:locTeams', label: 'Teams チャットとチャネル メッセージ' }, { id: 'chk:locOD', label: 'OneDrive' }, { id: 'chk:locSP', label: 'SharePoint' }, { id: 'chk:locMail', label: 'Exchange メール' }] },
                   { t: 'select', id: 'sel:dlpscope', label: 'スコープ', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'all', label: '組織全体' }, { v: 'pilot', label: 'SG-Agent365-Pilot に限定' }] },
-                  { t: 'select', id: 'sel:dlpaction', label: 'アクション', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'block', label: 'ブロック' }, { v: 'audit', label: '監査のみ（ポリシーヒントとアラート）' }] },
+                  { t: 'select', id: 'sel:dlpaction', label: 'ポリシーモード', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'block', label: 'ポリシーをすぐに有効にする' }, { v: 'simulation', label: 'シミュレーションモードでポリシーを実行する' }, { v: 'off', label: 'ポリシーをオフのままにする' }] },
                   { t: 'btns', items: [{ id: 'btn:createdlp', label: '作成', prim: true }] }
                 ]
               },
-              { t: 'banner', kind: 'ok', when: 'panel:dlpcreated', text: '監査モードで作成しました。1 週間運用し、アラートの内容を Week 3 のレビューで確認します。' }
+              { t: 'banner', kind: 'ok', when: 'panel:dlpcreated', text: 'シミュレーションモードで作成しました。強制せずに影響を評価し、1 週間運用して Week 3 のレビューでアラートを確認します。' }
             ]
           }
         ],
         tasks: [
-          { say: '**ポリシーの作成** を選ぶ', target: 'cmd:newdlp', set: { 'panel:dlpnew': true }, hint: '既存ポリシーがエージェントとの対話を対象にしているかを確認したうえで、必要なら新規作成します。', done: '作成画面が開きました。' },
+          { say: '未構成の DLP で **始める** を選ぶ', target: 'btn:startdlp', set: { 'panel:dlpstart': true }, hint: '既存ポリシーの対象を確認したうえで、未構成の場合に開始します。', done: '対象設定が開きました。' },
+          { say: 'ユーザーとグループを **パイロットグループ** に限定する', target: 'sel:startscope', equals: 'pilot', hint: '組織全体には広げません。', done: '対象を限定しました。' },
+          { say: '機密情報の種類として **クレジットカード番号** を選ぶ', target: 'sel:sit', equals: 'credit', hint: '検知したい機密情報の種類を指定します。', done: '機密情報の種類を指定しました。' },
+          { say: '**設定を保存**する', target: 'btn:saveinitial', set: { 'panel:dlpinitial': true }, hint: '対象と検知内容を保存します。', done: '初期設定を保存しました。' },
+          { say: '追加の設定が必要な場合に **ポリシーの作成** を選ぶ', target: 'cmd:newdlp', set: { 'panel:dlpnew': true }, hint: '場所とスコープを確認して追加ポリシーを構成します。', done: '作成画面が開きました。' },
           { say: 'ポリシー名に **A365-PoC** で始まる名前を入力する', target: 'fld:dlpname', pattern: '^A365-PoC', hint: '例：`A365-PoC-Agent-DLP-Audit`。撤収時に見分けられる名前にします。', done: 'PoC 用と分かる名前です。' },
+          { say: '場所として **Teams** を選ぶ', target: 'chk:locTeams', hint: 'エージェントとの対話を対象にします。', done: 'Teams を選びました。' },
+          { say: '場所として **OneDrive** を選ぶ', target: 'chk:locOD', hint: '必要なデータの場所を選びます。', done: 'OneDrive を選びました。' },
+          { say: '場所として **SharePoint** を選ぶ', target: 'chk:locSP', hint: '必要なデータの場所を選びます。', done: 'SharePoint を選びました。' },
+          { say: '場所として **Exchange メール** を選ぶ', target: 'chk:locMail', hint: 'メールの対話も対象に含めます。', done: 'Exchange メールを選びました。' },
           { say: 'スコープを **パイロットグループに限定**する', target: 'sel:dlpscope', equals: 'pilot', hint: '本番テナントのため、場所とスコープはパイロットグループに限定します。', done: '限定しました。' },
-          { say: 'アクションを **監査のみ** にする', target: 'sel:dlpaction', equals: 'audit', hint: 'エージェントは DLP のブロックを認識できません。PoC 中は監査のみが推奨です。', done: '監査モードにしました。' },
+          { say: 'ポリシーモードを **シミュレーションモード** にする', target: 'sel:dlpaction', equals: 'simulation', hint: '手順書の画面上の名称はシミュレーションモードです。強制せずに影響を評価します。', done: 'シミュレーションモードにしました。' },
           { say: '**作成** する', target: 'btn:createdlp', set: { 'panel:dlpcreated': true }, hint: '最後に作成します。', done: '作成しました。' }
         ],
         wrap: '**注意**：エージェントは DLP のブロックを認識できないため、ブロックに切り替えるのはオーナーが監視できる体制ができてからにします。秘密度ラベルで暗号化されたファイルを扱うエージェントには、エージェントインスタンスに **VIEW と EXTRACT** の使用権限を明示的に付与する必要があります。'
@@ -514,10 +533,10 @@
         goal: '監査モード運用の理由と前提を確認する',
         questions: [
           {
-            q: 'PoC 期間中の DLP ポリシーのアクションとして推奨されるのはどれですか。',
-            choices: ['ブロック', '監査のみ（ポリシーヒントとアラート）', '削除', '暗号化'],
+            q: 'PoC 期間中の DLP ポリシーモードとして選ぶものはどれですか。',
+            choices: ['ポリシーをすぐに有効にする', 'シミュレーションモードでポリシーを実行する', '削除', '暗号化'],
             answer: [1],
-            explain: 'エージェントは DLP のブロックを認識できません。オーナーが監視できる体制ができてからブロックに切り替えます。'
+            explain: 'シミュレーションモードで影響を評価します。エージェントは DLP のブロックを認識できないため、有効化はオーナーが監視できる体制と切替条件を確認してから判断します。'
           },
           {
             q: '秘密度ラベルで暗号化されたファイルをエージェントが扱えるようにするために必要な使用権限はどれですか。',
@@ -542,7 +561,7 @@
             q: 'Registry のリスク件数と Defender / Purview の表示が一致しない場合の対処はどれですか。',
             choices: ['テナントを再作成する', '時間をおいて再確認し、判断は発生元のポータルで行う', 'ライセンスを追加する', 'ポリシーを削除する'],
             answer: [1],
-            explain: 'ポータル間の反映には最大 1 時間の遅延があります（12 章）。'
+            explain: 'ポータル間の反映には最大 1 時間の遅延があります（14 章）。'
           }
         ]
       }

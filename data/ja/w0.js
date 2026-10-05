@@ -41,7 +41,7 @@
                 ['対象', '情報システム部門・セキュリティ部門の PoC 実施担当者'],
                 ['前提構成', 'Microsoft 365 E5 に Microsoft Agent 365 を追加／本番テナントでパイロットユーザー 10 名程度'],
                 ['統制の適用', 'PoC 期間中は **レポート専用・監査のみ** が基本。強制（ブロック）は Week 4 に対象を限定して判断'],
-                ['版', 'v3（2026 年 9〜10 月時点）']
+                ['版', 'v3（2026 年 10 月）']
               ]
             }
           },
@@ -60,14 +60,15 @@
               rows: [
                 ['2〜3 章', 'Week 0', '前提条件の確認、ロール付与、事前チェックリスト'],
                 ['4〜5 章', 'Week 1', 'Agent 365 の有効化確認、ローカルエージェントの検出'],
-                ['6〜7 章', 'Week 2', 'エージェントレジストリによる棚卸しとベースライン作成、Purview DSPM for AI'],
-                ['8 章', 'Week 3', 'Entra Agent ID の棚卸し、オーナー・スポンサー、条件付きアクセス、アクセスレビュー'],
-                ['9 章', 'Week 3', 'Defender のリアルタイム保護、脅威検出と調査'],
-                ['10 章', 'Week 4', '運用プロセスの確定、監査モードから強制への切替判断、KPI 測定'],
-                ['11〜13 章', '全期間', '検証シナリオ、トラブルシューティング、撤収手順']
+                ['6〜8 章', 'Week 2', 'レジストリによる棚卸し、Purview DSPM、接続されたプラットフォーム'],
+                ['9 章', 'Week 3', 'Entra Agent ID の棚卸し、オーナー・スポンサー、条件付きアクセス、アクセスレビュー'],
+                ['10 章', 'Week 3', 'Defender のリアルタイム保護、脅威検出と調査'],
+                ['11〜12 章', 'Week 4', '運用プロセスの確定、KPI 測定、Success Criteria と Exit Criteria の判定'],
+                ['13〜15 章', '全期間', '検証シナリオ、トラブルシューティング、撤収手順']
               ]
             }
           },
+          { note: 'PoC の評価は Observe・Govern・Secure の 22 基準と Evidence で記録します。終了時は Observe・Govern・Protect・Control・Operate の 5 Outcome を判定します。全基準の Pass や強制適用は終了の必須条件ではありません（12 章）。' },
           { img: 'image2.png', caption: '手順書に掲載された PoC 全体像の図（実資料より）' }
         ]
       },
@@ -97,7 +98,7 @@
               rows: [
                 ['AI Administrator', 'Agent Registry での承認、オーナー割り当て、ブロック・削除、ピン留め。Graph API でのエージェント一覧取得'],
                 ['Security Administrator', 'Defender ポータルでの Security for AI オンボード、Defender 由来のリスク確認'],
-                ['Compliance Administrator（Purview）', 'DSPM for AI、DLP、監査、インサイダーリスクの設定'],
+                ['Compliance Administrator（Purview）', 'DSPM、DLP、監査、インサイダーリスクの設定'],
                 ['Insider Risk Management Analyst / Investigator', 'Registry から Purview 由来のリスク詳細を参照する際に必要'],
                 ['Conditional Access Administrator', 'エージェント向け条件付きアクセスポリシーの作成'],
                 ['Agent ID Administrator（または Cloud Application Administrator）', 'Agent identities・Agent blueprints の管理、オーナー・スポンサーの変更'],
@@ -121,7 +122,7 @@
         pairs: [
           { left: 'Registry での承認・オーナー割り当て・ブロック', right: 'AI Administrator' },
           { left: 'Defender security for AI のオンボード', right: 'Security Administrator' },
-          { left: 'DSPM for AI / DLP / 監査の設定', right: 'Compliance Administrator' },
+          { left: 'DSPM / DLP / 監査の設定', right: 'Compliance Administrator' },
           { left: 'エージェント向け条件付きアクセスポリシーの作成', right: 'Conditional Access Administrator' },
           { left: 'Agent identities / Blueprints の管理、スポンサー変更', right: 'Agent ID Administrator' },
           { left: 'Registry の閲覧のみ（統制操作は不可）', right: 'Global Reader / Security Reader' },

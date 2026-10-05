@@ -24,16 +24,16 @@
   A365.addLesson('ja', {
     id: 'w3-1',
     week: 3,
-    chapter: '8',
+    chapter: '9',
     title: '手順 5：Entra Agent ID とライフサイクル統制',
     summary: '棚卸しと突合、オーナー／スポンサー、カスタム属性、条件付きアクセス、アクセスパッケージとレビュー',
     steps: [
 
       {
         type: 'sim',
-        title: '8.1 Agent identities を棚卸しして台帳と突合する',
+        title: '9.1 Agent identities を棚卸しして台帳と突合する',
         goal: '必要な列を表示し、Registry 側の台帳と突合して「シャドー」を洗い出す',
-        ref: 'image37.png',
+        ref: 'image66.png',
         refCaption: 'Entra ID > エージェント > Agent identities（実画面）',
         screens: [
           {
@@ -85,7 +85,7 @@
           { say: '**列のカスタマイズ** を開く', target: 'cmd:cols', screen: 1, set: { 'panel:cols': true }, hint: '既定では必要な列が出ていません。', done: '列の選択が表示されました。' },
           { say: '**Object ID** を表示する', target: 'chk:colObjId', hint: '突合のキーになる列です。', done: 'チェックしました。' },
           { say: '**Blueprint App ID** を表示する', target: 'chk:colBp', hint: 'どの Blueprint から作られたかを示します。', done: 'チェックしました。' },
-          { say: '**Owners and Sponsors** を表示する', target: 'chk:colOwners', hint: '8.2 のオーナー／スポンサー割り当てで使います。', done: 'チェックしました。' },
+          { say: '**Owners and Sponsors** を表示する', target: 'chk:colOwners', hint: '9.2 のオーナー／スポンサー割り当てで使います。', done: 'チェックしました。' },
           { say: '**Created On** を表示して **適用** する', target: 'chk:colCreated', hint: '作成日も台帳に記録します。', done: 'チェックしました。' },
           { say: '**適用** をクリックする', target: 'btn:applycols2', set: { 'panel:colsApplied': true }, hint: '選んだ列を反映します。', done: '列が表示されました。' },
           { say: 'Week 2 の台帳（Registry 由来）と **突合** する', target: 'cmd:reconcile', set: { 'panel:reconciled': true }, hint: 'Registry にあるが Agent identity がないものを探します。', done: '突合が完了しました。' }
@@ -95,9 +95,9 @@
 
       {
         type: 'sim',
-        title: '8.2 オーナーとスポンサーを割り当てる',
+        title: '9.2 オーナーとスポンサーを割り当てる',
         goal: 'オーナー／スポンサーが空のエージェントに責任者を割り当て、オーナー不在を 0 件にする',
-        ref: 'image38.png',
+        ref: 'image67.png',
         refCaption: 'Manage owners and sponsors（実画面）',
         screens: [
           {
@@ -137,9 +137,9 @@
 
       {
         type: 'sim',
-        title: '8.4 カスタムセキュリティ属性で対象を指定できるようにする',
+        title: '9.4 カスタムセキュリティ属性で対象を指定できるようにする',
         goal: '属性セット Agent365 と属性 PoCScope / Criticality を定義し、重点エージェントに付与する',
-        ref: ['image40.png', 'image41.png'],
+        ref: ['image69.png', 'image70.png'],
         refCaption: 'カスタム セキュリティ属性の属性セットと属性定義（実画面）',
         screens: [
           {
@@ -177,14 +177,14 @@
           { say: '**追加** する', target: 'btn:saveattrset', set: { 'panel:attrdef': true }, hint: '属性セットを作成します。', done: '属性セットができました。' },
           { say: '条件付きアクセスの対象指定に使う属性 **PoCScope** を定義する', target: 'attr:poc', set: { 'panel:attrdone': true }, hint: '値は Pilot / Prod の 2 つです。', miss: { 'attr:dept': 'Department はこの PoC では使いません。' }, done: '定義しました。' }
         ],
-        wrap: '**Criticality**（High / Medium / Low）も同様に定義します。重点エージェントには `PoCScope = Pilot` を割り当て、8.3 のポリシーをこの属性でフィルターします。'
+        wrap: '**Criticality**（High / Medium / Low）も同様に定義します。重点エージェントには `PoCScope = Pilot` を割り当て、9.3 のポリシーをこの属性でフィルターします。'
       },
 
       {
         type: 'sim',
-        title: '8.3 条件付きアクセスをレポート専用で作成する',
+        title: '9.3 条件付きアクセスをレポート専用で作成する',
         goal: 'Agents を対象に、高・中リスクをブロックするポリシーをレポート専用で作る',
-        ref: 'image39.png',
+        ref: 'image68.png',
         refCaption: 'エージェント向け条件付きアクセスポリシー（実画面）',
         screens: [
           {
@@ -232,7 +232,7 @@
           { say: '**新しいポリシー** を作成する', target: 'cmd:newca', screen: 0, hint: 'コマンドバーにあります。', done: '作成画面が開きました。' },
           { say: 'PoC 用と分かる名前を入力する（**A365-PoC** で始める）', target: 'fld:caname', screen: 1, pattern: '^A365-PoC', hint: '例：`A365-PoC-Agents-Block-HighRisk（Report-only）`。撤収時に見分けられるようにします。', done: '命名しました。' },
           { say: '適用対象で **エージェント（プレビュー）** を選ぶ', target: 'sel:catarget', equals: 'agents', hint: '「ユーザー、エージェント（プレビュー）、またはワークロード ID」からエージェントを選びます。', done: '選択しました。' },
-          { say: '対象の選び方を **カスタムセキュリティ属性** にする', target: 'sel:caselect', equals: 'attr', hint: '個別のエージェントを選ぶと、増えるたびにポリシーの修正が必要になります。8.4 で作った属性を使います。', done: '属性で指定しました。' },
+          { say: '対象の選び方を **カスタムセキュリティ属性** にする', target: 'sel:caselect', equals: 'attr', hint: '個別のエージェントを選ぶと、増えるたびにポリシーの修正が必要になります。9.4 で作った属性を使います。', done: '属性で指定しました。' },
           { say: 'ターゲット リソースに **All agent resources** を選ぶ', target: 'sel:caresource', equals: 'allagentres', hint: '手順書の指定どおりです。', done: '選択しました。' },
           { say: '条件でリスクレベル **高** を選ぶ', target: 'chk:riskHigh', hint: '高・中のリスクを対象にします。', done: 'チェックしました。' },
           { say: 'リスクレベル **中** も選ぶ', target: 'chk:riskMed', hint: 'もう 1 つです。', miss: { 'chk:riskLow': '対象は高・中です。低リスクまで含めると誤検知が増えます。' }, done: 'チェックしました。' },
@@ -245,9 +245,9 @@
 
       {
         type: 'sim',
-        title: '8.5-8.6 アクセスパッケージとアクセスレビュー',
+        title: '9.5-9.6 アクセスパッケージとアクセスレビュー',
         goal: '有効期限と承認者（スポンサー）を設定し、レビューを 1 サイクル回す',
-        ref: 'image42.png',
+        ref: 'image71.png',
         refCaption: 'エンタイトルメント管理 > アクセス パッケージ（実画面）',
         screens: [
           {
@@ -277,7 +277,7 @@
               { t: 'cmdbar', items: [{ id: 'cmd:newar', label: '新しいアクセス レビュー', icon: 'plus' }] },
               {
                 t: 'card', title: '新しいアクセス レビュー', when: 'panel:arnew', children: [
-                  { t: 'select', id: 'sel:artarget', label: 'レビュー対象', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'ap', label: '8.5 のアクセス パッケージ' }, { v: 'allusers', label: '全ユーザーのロール割り当て' }] },
+                  { t: 'select', id: 'sel:artarget', label: 'レビュー対象', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'ap', label: '9.5 のアクセス パッケージ' }, { v: 'allusers', label: '全ユーザーのロール割り当て' }] },
                   { t: 'select', id: 'sel:arreviewer', label: 'レビュー担当者', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'sponsor', label: 'スポンサー' }, { v: 'self', label: '本人（セルフレビュー）' }] },
                   { t: 'select', id: 'sel:arperiod', label: '期間と繰り返し', value: '', options: [{ v: '', label: '（選択してください）' }, { v: 'once1w', label: '1 週間・1 回限り' }, { v: 'quarterly', label: '四半期ごと' }] },
                   { t: 'btns', items: [{ id: 'btn:createar', label: '作成', prim: true }] }
@@ -298,7 +298,7 @@
           { say: '**作成** する', target: 'btn:createap', set: { 'panel:apdone': true }, hint: '最後に作成します。', done: '作成しました。' },
           { say: '左ナビの **アクセス レビュー** を開く', target: 'nav:entra.ar', screen: 1, navSel: 'nav:entra.ar', hint: 'ID ガバナンスの中にあります。', done: '開きました。' },
           { say: '**新しいアクセス レビュー** を作成する', target: 'cmd:newar', set: { 'panel:arnew': true }, hint: 'コマンドバーにあります。', done: '作成画面が開きました。' },
-          { say: 'レビュー対象を **8.5 のアクセス パッケージ** にする', target: 'sel:artarget', equals: 'ap', hint: 'アクセスパッケージ、またはエージェントが所属するグループが対象です。', done: '選択しました。' },
+          { say: 'レビュー対象を **9.5 のアクセス パッケージ** にする', target: 'sel:artarget', equals: 'ap', hint: 'アクセスパッケージ、またはエージェントが所属するグループが対象です。', done: '選択しました。' },
           { say: 'レビュー担当者を **スポンサー** にする', target: 'sel:arreviewer', equals: 'sponsor', hint: 'セルフレビューでは統制になりません。', done: '選択しました。' },
           { say: '期間を **1 週間・1 回限り** にする', target: 'sel:arperiod', equals: 'once1w', hint: 'PoC 期間中に 1 サイクル完了させます。', done: '選択しました。' },
           { say: '**作成** する', target: 'btn:createar', set: { 'panel:ardone': true }, hint: '最後に作成します。', done: '作成しました。' }
@@ -307,7 +307,7 @@
 
       {
         type: 'checklist',
-        title: '8.7 確認ポイント',
+        title: '9.7 確認ポイント',
         goal: 'Week 3 前半の完了条件を確認する',
         key: 'w3-1-check',
         items: [
@@ -361,15 +361,15 @@
   A365.addLesson('ja', {
     id: 'w3-2',
     week: 3,
-    chapter: '9',
+    chapter: '10',
     title: '手順 6：リアルタイム保護と調査',
     summary: 'Defender のリアルタイム保護ルール作成、脅威検出、高度なハンティング',
     steps: [
       {
         type: 'sim',
-        title: '9.1 AI エージェントのリアルタイム保護ルールを作る',
+        title: '10.1 AI エージェントのリアルタイム保護ルールを作る',
         goal: '名前・スコープ・除外・検出の種類を指定してルールを作成し、有効になったことを確認する',
-        ref: ['image43.png', 'image44.png'],
+        ref: ['image72.png', 'image73.png'],
         refCaption: '設定 > AI のセキュリティ > ポリシーとルール > リアルタイム保護（実画面）',
         screens: [
           {
@@ -430,7 +430,7 @@
 
       {
         type: 'info',
-        title: '9.2 脅威の検出と調査（高度なハンティング）',
+        title: '10.2 脅威の検出と調査（高度なハンティング）',
         goal: 'Defender が検出する脅威の種類と、KQL による調査方法を知る',
         body: [
           { h: 'ほぼリアルタイムで AI エージェントの脅威を検出' },
@@ -446,10 +446,10 @@
               '疑わしいユーザーや IP アクセス'
             ]
           },
-          { img: 'image45.png', caption: 'AI エージェントの脅威検出（実画面）' },
+          { img: 'image74.png', caption: 'AI エージェントの脅威検出（実画面）' },
           { h: '高度なハンティングで調査する' },
           { p: 'AI エージェントのアラートはインシデントに関連付けられ、関連コンテキストが表示されるため、影響の評価と対応の優先順位付けが素早く行えます。アナリストは **KQL（Kusto クエリ言語）** で Agent 365 の監視データにクエリを実行できます。' },
-          { img: 'image46.png', caption: '高度なハンティングでの調査（実画面）' },
+          { img: 'image75.png', caption: '高度なハンティングでの調査（実画面）' },
           { note: '参考：https://learn.microsoft.com/ja-jp/defender-xdr/security-for-ai/ai-agent-detection-protection' }
         ]
       },

@@ -234,7 +234,7 @@
           { say: '**AI のセキュリティ** を開く', target: 'nav:def.settings.ai', screen: 2, navSel: 'nav:def.settings.ai', hint: '設定の配下にある項目です。', done: 'AI のセキュリティ設定が開きました。' },
           { say: 'データ収集が **有効** であることと、**Agent 365** が「完了」であることを確認する（Agent 365 のステップをクリック）', target: 'step:a365', hint: 'トグルはオンのままにします。確認するのはウィザードの Agent 365 ステップの状態です。', miss: { 'tgl:collect': 'データ収集は既定でオンです。ここでクリックするとオフになってしまいます。確認するだけで触りません。' }, done: 'Agent 365 が完了であることを確認しました。' }
         ],
-        wrap: 'データ収集トグルは **オンのまま**にします。撤収時（13 章）も、原則として Defender security for AI のデータ収集と Microsoft 365 コネクタは維持します。'
+        wrap: 'データ収集トグルは **オンのまま**にします。撤収時（15 章）も、原則として Defender security for AI のデータ収集と Microsoft 365 コネクタは維持します。'
       },
 
       {

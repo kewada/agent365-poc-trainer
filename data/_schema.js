@@ -1,5 +1,5 @@
 /* ===== コース定義の受け皿 =====
-   data/ja/*.js と data/en/*.js が A365.addLesson(lang, lesson) を呼んで登録する。
+   data/ja の定義を登録し、英語版は Translate.lesson から組み立てる。
    両言語でレッスン ID・ステップ構成・操作タスクの target は完全に一致させること
    （進捗は言語をまたいで共有され、整合性は validate で検査される）。 */
 var A365 = (function () {
@@ -21,7 +21,7 @@ var A365 = (function () {
     {
       id: 2, icon: 'search',
       label: { ja: 'Week 2', en: 'Week 2' },
-      title: { ja: '棚卸しと Purview での可視化', en: 'Inventory and visibility with Purview' }
+      title: { ja: '棚卸し・Purview 調査・プラットフォーム接続', en: 'Inventory, Purview investigation and platform connections' }
     },
     {
       id: 3, icon: 'shield-check',
@@ -31,7 +31,7 @@ var A365 = (function () {
     {
       id: 4, icon: 'flag',
       label: { ja: 'Week 4', en: 'Week 4' },
-      title: { ja: '運用プロセスの確定と撤収', en: 'Operating model and rollback' }
+      title: { ja: '運用・成功判定・撤収', en: 'Operations, success evaluation and rollback' }
     },
     {
       id: 9, icon: 'book-open',
@@ -40,10 +40,19 @@ var A365 = (function () {
     }
   ];
 
-  function addLesson(lang, lesson) {
+  function addLesson(lang, lesson, afterId) {
     if (typeof lang !== 'string') { lesson = lang; lang = 'ja'; }
     if (!lessons[lang]) lessons[lang] = [];
-    lessons[lang].push(lesson);
+    if (lessons[lang].some(function (l) { return l.id === lesson.id; })) {
+      throw new Error('レッスン ID が重複しています: ' + lesson.id);
+    }
+    if (afterId) {
+      var idx = lessons[lang].findIndex(function (l) { return l.id === afterId; });
+      if (idx < 0) throw new Error('挿入先のレッスンがありません: ' + afterId);
+      lessons[lang].splice(idx + 1, 0, lesson);
+    } else {
+      lessons[lang].push(lesson);
+    }
   }
 
   /* 表示言語の切り替え（未登録の言語は日本語にフォールバック） */
