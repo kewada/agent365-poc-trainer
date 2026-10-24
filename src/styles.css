@@ -920,6 +920,31 @@ body.dark .finish{box-shadow:none;border:1px solid var(--line)}
 .finish .fi.done{background:linear-gradient(145deg,#1d8a4e,#30d158)}
 
 /* ==========================================================================
+   Entrance motion
+   画面単位の要素だけを動かし、操作演習内の再描画には適用しない。
+   ========================================================================== */
+@keyframes soft-rise{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion: no-preference){
+  .appbar{animation:fadein .5s var(--ease) backwards}
+  .sidebar{animation:fadein .55s var(--ease) .05s backwards}
+  .main-inner > :not(.dash-grid),
+  .dash-grid > .dash-card{
+    animation:soft-rise .62s cubic-bezier(.22,1,.36,1) backwards;
+  }
+  .main-inner > :nth-child(2){animation-delay:.06s}
+  .main-inner > :nth-child(3){animation-delay:.12s}
+  .main-inner > :nth-child(4){animation-delay:.16s}
+  .main-inner > :nth-child(n+5){animation-delay:.2s}
+  .dash-grid > .dash-card{animation-delay:.08s}
+  .dash-grid > .dash-card:nth-child(2){animation-delay:.12s}
+  .dash-grid > .dash-card:nth-child(3){animation-delay:.16s}
+  .dash-grid > .dash-card:nth-child(n+4){animation-delay:.2s}
+}
+
+/* ==========================================================================
    Responsive
    ========================================================================== */
 @media(max-width:1180px){ .sim-wrap{grid-template-columns:1fr} }
