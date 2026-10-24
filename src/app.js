@@ -246,7 +246,7 @@
       var ls = A365.byWeek(w.id);
       if (!ls.length) return;
       var c = el('div', { class: 'card' });
-      c.appendChild(el('h2', { class: 'sec', style: 'display:flex;align-items:center;gap:9px' }, [
+      c.appendChild(el('h2', { class: 'sec dash-week-title', style: 'display:flex;align-items:center;gap:9px' }, [
         ic(w.icon, 17), el('span', { text: w.label + '　' + w.title })
       ]));
       ls.forEach(function (l) {
