@@ -24,12 +24,12 @@ var I18N = (function () {
 
     /* --- ダッシュボード --- */
     heroTitle: {
-      ja: '管理ポータルの操作を、手を動かして覚える。',
-      en: 'Learn the admin portals by actually doing the work.'
+      ja: 'Microsoft Agent 365 シミュレーター',
+      en: 'Microsoft Agent 365 Simulator'
     },
     heroBody: {
-      ja: 'Microsoft Agent 365 PoC セットアップ手順書 v3 をもとにした操作トレーニングです。実際の管理画面を再現したシミュレーターで、正しい手順を身につけます。',
-      en: 'Hands-on training based on the Microsoft Agent 365 PoC Setup Guide v3. Practise the real procedure in a simulator that mirrors the actual admin portals.'
+      ja: 'Microsoft Agent 365 PoC セットアップ手順書をもとにした操作トレーニングです。実際の管理画面を再現したシミュレーターで、正しい手順を身につけます。',
+      en: 'Hands-on training based on the Microsoft Agent 365 PoC Setup Guide. Practise the real procedure in a simulator that mirrors the actual admin portals.'
     },
     startFromBeginning: { ja: '最初から始める', en: 'Start from the beginning' },
     resume: { ja: '続きから始める', en: 'Resume' },
